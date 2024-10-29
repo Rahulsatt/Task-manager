@@ -90,14 +90,32 @@ export class RegistrationPage implements OnInit {
     };
   }
   
-  onSubmit() {
+  
+  async onSubmit() {
     if (this.registrationForm.valid) {
-      console.log('Form Submitted:', this.registrationForm.value);
+      try {
+        const result = await this.us.add(
+          this.registrationForm.value.fname,
+          this.registrationForm.value.lname,
+          this.registrationForm.value.username,
+          this.registrationForm.value.email,
+          this.registrationForm.value.password,
+          this.registrationForm.value.mobile,
+          this.registrationForm.value.alterPhone,
+          this.registrationForm.value.dob
+        );
+        console.log('User added successfully:', result);
+        // Handle success, like navigating to another page or showing a success message
+      } catch (error) {
+        console.error('Error adding user:', error);
+        // Handle error, like showing an error message
+      }
     } else {
       console.log('Form is not valid.');
     }
   }
-
+  
+  
 
   
 }

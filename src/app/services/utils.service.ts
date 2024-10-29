@@ -28,5 +28,6 @@ export class UtilsService {
   async hide_loader(){
     await this.lc.dismiss()
   }
-  
+
 }
+
