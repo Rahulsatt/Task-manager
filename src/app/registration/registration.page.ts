@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonLabel, IonItem, IonButton, IonText, IonInput, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
+import { UserService } from '../services/user.service';
+import { UtilsService } from '../services/utils.service';
+import { ApiService } from '../services/api.service';
+
 
 @Component({
   selector: 'app-registration',
@@ -14,16 +18,23 @@ export class RegistrationPage implements OnInit {
   registrationForm!: FormGroup;
   captchaText: string = '';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,
+    private us : UserService,
+    private uts : UtilsService,
+    private api : ApiService
+  ) { }
 
   ngOnInit() {
     this.captchaText = this.generateCaptcha(); // Generate captcha text
 
     this.registrationForm = this.fb.group({
       name: ['', [Validators.required, this.nameValidator()]], 
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20), this.alphanumericValidator()]], // Username field
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, this.passwordValidator()]],
       confirmPassword: ['', Validators.required],
+      mobile: ['', [Validators.required, this.mobileValidator()]],
+      alterPhone: ['', this.mobileValidator()], // Optional alternative phone field
       captcha: ['', Validators.required]
     }, { validators: this.confirmPasswordValidator });
   }
@@ -37,6 +48,14 @@ export class RegistrationPage implements OnInit {
     }
     return captcha;
   }
+
+  alphanumericValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valid = /^[a-zA-Z0-9]+$/.test(control.value); // Only letters and numbers
+      return valid ? null : { invalidUsername: { value: control.value } };
+    };
+  }
+
 
   // Custom Validator for Name - Only alphabets allowed
   nameValidator(): ValidatorFn {
@@ -61,6 +80,16 @@ export class RegistrationPage implements OnInit {
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
+
+  // mobile number validation the length of the number should be 10 digit with country code 
+
+  mobileValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valid = /^[0-9]{10}$/.test(control.value); // Checks if the input has exactly 10 digits
+      return valid ? null : { invalidMobile: { value: control.value } };
+    };
+  }
+  
   onSubmit() {
     if (this.registrationForm.valid) {
       console.log('Form Submitted:', this.registrationForm.value);
@@ -68,4 +97,7 @@ export class RegistrationPage implements OnInit {
       console.log('Form is not valid.');
     }
   }
+
+
+  
 }

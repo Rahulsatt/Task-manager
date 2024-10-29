@@ -10,80 +10,159 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
       <!-- Name Field -->
       <ion-row>
-        <ion-col size="6">
-          <ion-item>
-            <ion-label position="floating">Name</ion-label>
-            <ion-input formControlName="name" type="text"></ion-input>
-          </ion-item>
+        <ion-col size-md="12" size-lg="6">
+          
+            <ion-input formControlName="name" type="text" label="First Name" labelPlacement="floating" fill="outline" placeholder="Type First"></ion-input>
+            <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('name')?.hasError('invalidName') && registrationForm.get('name')?.touched"
+          >
+            Name must contain only letters.
+          </ion-text>
         </ion-col>
-        <ion-col size="6">
 
+        <ion-col size-md="12" size-lg="6">
+         <ion-input formControlName="name" type="text" label="Last Name" labelPlacement="floating" fill="outline" placeholder="Type Last Name"></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('name')?.hasError('invalidName') && registrationForm.get('name')?.touched"
+          >
+            Name must contain only letters.
+          </ion-text>
         </ion-col>
       </ion-row>
 
+      <ion-row>
+        <ion-col size-md="12" size-lg="6">
+            <ion-input formControlName="username" type="text" label=" UserrName" labelPlacement="floating" fill="outline" placeholder="Type UserrName"></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('username')?.invalid && (registrationForm.get('username')?.touched || registrationForm.get('username')?.dirty)"
+          >
+            <p *ngIf="registrationForm.get('username')?.errors?.['required']">
+              Username is required.
+            </p>
+            <p
+              *ngIf="registrationForm.get('username')?.errors?.['invalidUsername']"
+            >
+              Username must be alphanumeric without spaces.
+            </p>
+            <p *ngIf="registrationForm.get('username')?.errors?.['minlength']">
+              Username must be at least 3 characters.
+            </p>
+            <p *ngIf="registrationForm.get('username')?.errors?.['maxlength']">
+              Username cannot exceed 20 characters.
+            </p>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size-md="12" size-lg="6">
+          <!-- Email Field -->
+            <ion-input formControlName="email" type="email" label="Email" labelPlacement="floating" fill="outline" placeholder="Enter Email"></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched"
+          >
+            Enter a valid email.
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="12" size-lg="6">
+          <!-- Password Field -->
+            <ion-input formControlName="password" type="password" label="Password" labelPlacement="floating" fill="outline" placeholder="Type Password"></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('password')?.hasError('invalidPassword') && registrationForm.get('password')?.touched"
+          >
+            Password must be at least 6 characters long, contain a number, and a
+            special character.
+          </ion-text>
+        </ion-col>
+
+        <ion-col size-md="12" size-lg="6">
+          <!-- Confirm Password Field -->
+            <ion-input
+              formControlName="confirmPassword"
+              type="password" label="confirmPassword" labelPlacement="floating" fill="outline" placeholder="Confirm Password"
+            ></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched"
+          >
+            Passwords must match.
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="12" size-lg="6">
+            <!-- Mobile Number -->
+            <ion-input formControlName="mobile" type="tel" label="Mobile Number" labelPlacement="floating" fill="outline" placeholder="Enter Mobile Number"></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('mobile')?.invalid && (registrationForm.get('mobile')?.touched || registrationForm.get('mobile')?.dirty)"
+          >
+            <p *ngIf="registrationForm.get('mobile')?.errors?.['required']">
+              Mobile number is required.
+            </p>
+            <p
+              *ngIf="registrationForm.get('mobile')?.errors?.['invalidMobile']"
+            >
+              Enter a valid 10-digit mobile number.
+            </p>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size-md="12" size-lg="6">
+            <!-- Alt Mobile Number -->
+            <ion-input formControlName="mobile" type="tel" label="Alternative Number" labelPlacement="floating" fill="outline" placeholder="Enter alternative Number"></ion-input>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('mobile')?.invalid && (registrationForm.get('mobile')?.touched || registrationForm.get('mobile')?.dirty)"
+          >
+            <p *ngIf="registrationForm.get('mobile')?.errors?.['required']">
+              Mobile number is required.
+            </p>
+            <p
+              *ngIf="registrationForm.get('mobile')?.errors?.['invalidMobile']"
+            >
+              Enter a valid 10-digit mobile number.
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size-md="12" size-lg="6">
+          <ion-item>
+            <ion-label position="fixed">Captcha: {{ captchaText }}</ion-label>
+            <ion-input
+              formControlName="captcha"
+              type="text"
+              label="Code"
+              labelPlacement="floating"
+              fill="outline"
+              placeholder="Enter the Code"
+            ></ion-input>
+          </ion-item>
+          <ion-text
+            color="danger"
+            *ngIf="registrationForm.get('captcha')?.value !== captchaText && registrationForm.get('captcha')?.touched"
+          >
+            Code does not match.
+          </ion-text>
+        </ion-col>
+      </ion-row>
       
-
-      
-
-      <!-- Email Field -->
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input formControlName="email" type="email"></ion-input>
-      </ion-item>
-      <ion-text
-        color="danger"
-        *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched"
-      >
-        Enter a valid email.
-      </ion-text>
-
-      <!-- Password Field -->
-      <ion-item>
-        <ion-label position="floating">Password</ion-label>
-        <ion-input formControlName="password" type="password"></ion-input>
-      </ion-item>
-      <ion-text
-        color="danger"
-        *ngIf="registrationForm.get('password')?.hasError('invalidPassword') && registrationForm.get('password')?.touched"
-      >
-        Password must be at least 6 characters long, contain a number, and a
-        special character.
-      </ion-text>
-
-      <!-- Confirm Password Field -->
-      <ion-item>
-        <ion-label position="floating">Confirm Password</ion-label>
-        <ion-input
-          formControlName="confirmPassword"
-          type="password"
-        ></ion-input>
-      </ion-item>
-      <ion-text
-        color="danger"
-        *ngIf="registrationForm.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.touched"
-      >
-        Passwords must match.
-      </ion-text>
-
-      <!-- Captcha Field -->
-      <ion-item>
-        <ion-label>Captcha: {{ captchaText }}</ion-label>
-        <ion-input formControlName="captcha" type="text"></ion-input>
-      </ion-item>
-      <ion-text
-        color="danger"
-        *ngIf="registrationForm.get('captcha')?.value !== captchaText && registrationForm.get('captcha')?.touched"
-      >
-        Captcha does not match.
-      </ion-text>
 
       <!-- Register Button -->
-      <ion-button
-        expand="block"
-        type="submit"
-        [disabled]="!registrationForm.valid"
-        >Register</ion-button
-      >
+      <div class="button-container">
+        <ion-button type="submit" [disabled]="registrationForm.invalid"
+          >Register</ion-button
+        >
+      </div>
     </form>
   </ion-grid>
 </ion-content>

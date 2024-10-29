@@ -12,3 +12,12 @@ ion-content {
     margin-left: 15px;
   }
   
+  .button-container {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    padding-top: 20px;
+  }
+  
+  ion-button {
+    width: auto; /* Ensures button doesn't expand to fill the container */
+  }
